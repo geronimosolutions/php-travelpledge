@@ -1,0 +1,29 @@
+{
+    "name": "handbid/php-travelpledge",
+    "description": "Handbid PHP Travel Pledge Library",
+    "type": "php-library",
+    "keywords": ["php", "library", "travelpledge", "geronimo"],
+    "version": "0.0.1",
+    "dist": {
+        "url": "git@github.com:handbid/php-travelpledge.git",
+        "type": "git"
+    },
+    "license": "GNU Public",
+    "authors": [
+        {
+            "name": "Woody Whitman",
+            "email": "woody@handbid.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "ext-curl": "*",
+        "ext-json": "*",
+        "lib-openssl": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "travelpledge\\": "lib/"
+        }
+    }
+}
