@@ -15,7 +15,7 @@ use travelpledge\Exception;
  * This class is responsible for the connection travelpledge
  *
  */
-abstract class Base
+abstract class BaseModel
 {
 
     /**

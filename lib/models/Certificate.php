@@ -12,7 +12,7 @@ namespace travelpledge\models;
  *
  * @author woody
  */
-class Certificate extends Base {
+class Certificate extends BaseModel {
     
     public $attributes = [];
 }

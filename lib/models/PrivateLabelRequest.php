@@ -14,7 +14,7 @@ namespace travelpledge\models;
  *
  * @author woody
  */
-class PrivateLabelRequest extends Base {
+class PrivateLabelRequest extends BaseModel {
 
     public $attributes = [
         "ContactFirstName",

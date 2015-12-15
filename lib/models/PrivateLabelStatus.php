@@ -14,7 +14,7 @@ namespace travelpledge\models;
  *
  * @author woody
  */
-class PrivateLabelStatus extends Base {
+class PrivateLabelStatus extends BaseModel {
 
     public $attributes = [
         "CharityID",

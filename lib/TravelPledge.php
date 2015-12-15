@@ -18,7 +18,7 @@ use travelpledge\models\PrivateLabelStatus;
  *
  * @author Woody Whitman <woody@handbid.com>
  */
-class TravelPledge {
+class TravelPledge extends BaseClient {
     
     const PATH_GOLF_CERT = '/rest/certificates/golf';
     const PATH_VACATION_CERT = '/rest/certificates/vacation';
@@ -31,11 +31,6 @@ class TravelPledge {
     const PATH_LABEL_REQUEST= '/rest/nonprofit/access/request';
     const PATH_LABEL_SEARCH = '/rest/nonprofit/search';
     const PATH_LABEL_STATUS= '/rest/nonprofit/access/status';
-    
-    public $apiVersion = 2;    
-    public $apiKey = '';    
-    public $contentType = 'application/json';    
-    public $verifyPeer = 0;
     
     /**
      *
@@ -115,6 +110,7 @@ class TravelPledge {
     public function getClient() {
         if (empty($this->_client)) {
             $this->_client = new Client([
+                'isProduction' => $this->isProduction,
                 'apiVersion' => $this->apiVersion,
                 'apiKey' => $this->apiKey,
                 'contentType' => $this->contentType,

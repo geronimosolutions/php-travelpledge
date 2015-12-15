@@ -12,42 +12,20 @@ namespace travelpledge;
  *
  * @author woody
  */
-class Client {
-    const METHOD_VIEW = 'GET';
-    const METHOD_CREATE = 'POST';
-    const METHOD_UPDATE = 'PUT';
-    
-    const PROTOCOL_UNSECURE = 'http';
-    const PROTOCOL_SECURE = 'http';
-    const PROTOCOL_UNSECURE_PORT = 80;
-    const PROTOCOL_SECURE_PORT = 443;
-    
-    public $apiVersion = 2;    
-    public $apiKey = '';    
-    public $contentType = 'application/json';    
-    public $verifyPeer = 0;
+class Client extends BaseClient {
 
     private $serverHost = 'api.geronimoamazon.com';    
     private $serverPort = 80;    
     private $protocol;
     
-    public function __construct($aAttributes) {
+    /**
+     * Constructor.
+     * Initializes the object with the given configuration `$aConfig`.
+     * @param array $aConfig name-value pairs that will be used to initialize the object properties
+     */
+    public function __construct($aConfig) {
         
-        $this->apiVersion = !empty($aAttributes['apiVersion']) ?
-            $aAttributes['apiVersion'] :
-            $this->apiVersion;
-        
-        $this->apiKey = !empty($aAttributes['apiKey']) ?
-            $aAttributes['apiKey'] :
-            $this->apiKey;
-        
-        $this->contentType = !empty($aAttributes['contentType']) ?
-            $aAttributes['contentType'] :
-            $this->contentType;
-        
-        $this->verifyPeer = !empty($aAttributes['verifyPeer']) ?
-            $aAttributes['verifyPeer'] :
-            $this->verifyPeer;
+        parent::__construct($aConfig);
         
         $this->protocol = $this->serverPort == self::PROTOCOL_SECURE_PORT ? 
             self::PROTOCOL_SECURE : 
