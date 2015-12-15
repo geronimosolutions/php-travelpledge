@@ -28,9 +28,12 @@ class TravelPledge extends BaseClient {
     const PATH_LABEL_CREATE = '/rest/nonprofit';
     const PATH_LABEL_LIST = '/rest/nonprofit';
     const PATH_LABEL_VIEW = '/rest/nonprofit';
-    const PATH_LABEL_REQUEST= '/rest/nonprofit/access/request';
+    const PATH_LABEL_REQUEST = '/rest/nonprofit/access/request';
     const PATH_LABEL_SEARCH = '/rest/nonprofit/search';
-    const PATH_LABEL_STATUS= '/rest/nonprofit/access/status';
+    const PATH_LABEL_STATUS = '/rest/nonprofit/access/status';
+    
+    const STATUS_LABEL_PENDING = 'PENDING';
+    const STATUS_LABEL_APPROVED = 'APPROVED';
     
     /**
      *
@@ -39,7 +42,7 @@ class TravelPledge extends BaseClient {
     private $_client;
     
     /**
-     * 
+     * Returns available Golf Certificates
      * @return GolfCertificate[]
      */
     public function viewGolfCertificates() {
@@ -59,7 +62,7 @@ class TravelPledge extends BaseClient {
     }
     
     /**
-     * 
+     * Returns available Vacation Certificates
      * @return VacationCertificate[]
      */
     public function viewVacationCertificates() {
@@ -78,33 +81,82 @@ class TravelPledge extends BaseClient {
         return $oCertificates;
     }
     
+    /**
+     * Crates a Private Label From a PrivateLabelRequest configuration array
+     * @param string[] $aConfig Uses PrivateLabelRequest attributes
+     * @see PrivateLabelRequest
+     * @return PrivateLabel
+     */
     public function createPrivateLabel($aConfig) {
         $oPrivateLabelRequest = new PrivateLabelRequest($aConfig);
         $oClient = $this->getClient();
         
         $aResults = $oClient->create(self::PATH_LABEL_REQUEST,$oPrivateLabelRequest->getAttributes());
         if (!$aResults) {
-            /** @todo logging */
-            return null;
+            return false;
         }
         return new PrivateLabel($aResults);
     }
     
-    public function checkPrivateLabelStatus() {
-        
-    }
-    
-    public function viewPrivateLabelsList() {
-        
-    }
-    
-    public function viewPrivateLabel($sPrivateLabelId) {
+    /**
+     * Returns PrivateLabelStatus list by Status Type
+     * @param string $sLabelStatusType
+     * @see self::STATUS_LABEL_PENDING
+     * @see self::STATUS_LABEL_APPROVED
+     * @return PrivateLabelStatus[]
+     */
+    public function checkPrivateLabelStatus($sLabelStatusType) {
+        $oPrivateLabelStatii = [];
         $oClient = $this->getClient();
-        $aResults = $oClient->view(self::PATH_LABEL_VIEW,$oPrivateLabelRequest->getAttributes());
+        
+        $aResults = $oClient->view(self::PATH_LABEL_STATUS, $sLabelStatusType);
+        if (!$aResults) {
+            return $oPrivateLabelStatii;
+        }
+        
+        foreach ($aResults as $aResult) {
+            $oPrivateLabelStatii[] = new PrivateLabelStatus($aResult);
+        }
+        
+        return $oPrivateLabelStatii; 
     }
     
     /**
-     * 
+     * View All available Private Labels
+     * @return PrivateLabel[]
+     */
+    public function viewPrivateLabelsList() {
+        $oPrivateLabels = [];
+        $oClient = $this->getClient();
+        
+        $aResults = $oClient->listing(self::PATH_LABEL_VIEW);
+        if (!$aResults) {
+            return $oPrivateLabels;
+        }
+        
+        foreach ($aResults as $aResult) {
+            $oPrivateLabels[] = new PrivateLabel($aResult);
+        }
+        
+        return $oPrivateLabels; 
+    }
+        
+    /**
+     * View Private Label By UUID
+     * @param string $sPrivateLabelId uuid
+     * @return PrivateLabel
+     */
+    public function viewPrivateLabel($sPrivateLabelId) {
+        $oClient = $this->getClient();
+        $aResults = $oClient->view(self::PATH_LABEL_VIEW,$sPrivateLabelId);
+        if (!$aResults) {
+            return null;
+        }
+        return new PrivateLabel($aResults);        
+    }
+    
+    /**
+     * Client Container Function
      * @return Client
      */
     public function getClient() {
