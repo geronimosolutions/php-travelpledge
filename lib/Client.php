@@ -32,19 +32,19 @@ class Client extends BaseClient {
             self::PROTOCOL_UNSECURE;
     }
 
-    protected function view($sPath, $sId) {
+    public function view($sPath, $sId) {
         return $this->transact(self::METHOD_VIEW, $sPath, null, $sId);
     }
 
-    protected function listing($sPath) {
+    public function listing($sPath) {
         return $this->transact(self::METHOD_VIEW, $sPath, null);
     }
 
-    protected function create($sPath, $aValues) {
+    public function create($sPath, $aValues) {
         return $this->transact(self::METHOD_CREATE, $sPath, $aValues);
     }
 
-    protected function update($sPath, $aValues) {
+    public function update($sPath, $aValues) {
         return $this->transact(self::METHOD_UPDATE, $sPath, $aValues);
     }
 

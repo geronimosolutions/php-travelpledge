@@ -22,7 +22,7 @@ abstract class BaseClient {
     const PROTOCOL_UNSECURE_PORT = 80;
     const PROTOCOL_SECURE_PORT = 443;
     
-    public $apiVersion = 2;    
+    public $apiVersion = 3;    
     public $apiKey = '';    
     public $contentType = 'application/json';    
     public $verifyPeer = 0;
