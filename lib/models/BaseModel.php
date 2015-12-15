@@ -1,20 +1,18 @@
 <?php
-/**
- * @file
- * travelpledge\Base abstract class definition.
- *
- * @author Woody Whitman <woody@handbid.com>
- */
+
 namespace travelpledge\models;
 
 use travelpledge\Exception;
+
 /**
- * Abstract class: this is the superclass for all travelpledge sungletons
- * classes.
+ * @project php-travelpledge
+ * @class travelpledge\models\BaseModel
  *
- * This class is responsible for the connection travelpledge
- *
+ * @author Woody Whitman <woody@handbid.com>
+ * 
+ * @property mixed $attributes
  */
+
 abstract class BaseModel
 {
     private $_attributes;
@@ -55,7 +53,9 @@ abstract class BaseModel
      */
     public function __get($attribute)
     {
-        if (isset($this->_attributes[$attribute])) {
+        if ($attribute == 'attributes') {
+            return $this->getAttributes();
+        } elseif (isset($this->_attributes[$attribute])) {
             return $this->_attributes[$attribute];
         }
         return null;
@@ -78,12 +78,22 @@ abstract class BaseModel
      */
     public function __set($attribute,$value)
     {
+        if ($attribute == 'attributes') {
+            return $this->setAttributes($value);
+        }
         $this->_attributes[$attribute] = $value;
 
         return $this->_attributes[$attribute];
     }
     
     public function getAttributes() {
+        return $this->_attributes;
+    }
+    
+    public function setAttributes($attributes) {
+        
+        $this->_attributes = $attributes;
+        
         return $this->_attributes;
     }
 }

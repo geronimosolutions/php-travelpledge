@@ -91,7 +91,7 @@ class TravelPledge extends BaseClient {
         $oPrivateLabelRequest = new PrivateLabelRequest($aConfig);
         $oClient = $this->getClient();
         
-        $aResults = $oClient->create(self::PATH_LABEL_REQUEST,$oPrivateLabelRequest->getAttributes());
+        $aResults = $oClient->create(self::PATH_LABEL_REQUEST,$oPrivateLabelRequest->attributes);
         if (!$aResults) {
             return false;
         }
@@ -122,6 +122,25 @@ class TravelPledge extends BaseClient {
     }
     
     /**
+     * Returns PrivateLabelStatus list by Status Type
+     * @param string $sLabelStatusType
+     * @see self::STATUS_LABEL_PENDING
+     * @see self::STATUS_LABEL_APPROVED
+     * @return PrivateLabelStatus|null
+     */
+    public function viewPrivateLabelStatus($sPrivateLabelId) {
+        /* @var $oPrivateLabelStatii PrivateLabelStatus[] */
+        $oPrivateLabelStatii = $this->checkPrivateLabelStatus(self::STATUS_LABEL_PENDING);
+        
+        foreach ($oPrivateLabelStatii as $oPrivateLabelStatus) {
+            if ($sPrivateLabelId === $oPrivateLabelStatus->CharityID) {
+                return $oPrivateLabelStatus;
+            }
+        }
+        return null;
+    }
+    
+    /**
      * View All available Private Labels
      * @return PrivateLabel[]
      */
@@ -144,7 +163,7 @@ class TravelPledge extends BaseClient {
     /**
      * View Private Label By UUID
      * @param string $sPrivateLabelId uuid
-     * @return PrivateLabel
+     * @return PrivateLabel|null
      */
     public function viewPrivateLabel($sPrivateLabelId) {
         $oClient = $this->getClient();

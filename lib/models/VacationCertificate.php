@@ -1,18 +1,36 @@
 <?php
 
-/**
- * @file
- * travelpledge\VacationCertificate class definition.
- *
- * @author Woody Whitman <woody@handbid.com>
- */
-
 namespace travelpledge\models;
 
+use travelpledge\Exception;
+
 /**
- * Description of VacationCertificate
+ * @project php-travelpledge
+ * @class travelpledge\models\VacationCertificate
  *
- * @author woody
+ * @author Woody Whitman <woody@handbid.com>
+ * 
+ * @property integer $Id
+ * @property string $VideoLink
+ * @property string $NumberOfNights
+ * @property string $ImageUrl
+ * @property string $NumberOfBedrooms
+ * @property string $MaximumOccupancy
+ * @property string $ValidityDetails
+ * @property string $RetailValue
+ * @property string $Status
+ * @property string $ClaimedDate
+ * @property string $PurchasedDate
+ * @property string $MinimumBid
+ * @property string $CertificateNumberText
+ * @property string $Description
+ * @property string $RedemptionInstructions
+ * @property string $Restrictions
+ * @property string $MarketingHeadline
+ * @property string $Provider
+ * @property string $City
+ * @property boolean $StateOrProvince
+ * @property string $Country
  */
 class VacationCertificate extends Certificate {
 

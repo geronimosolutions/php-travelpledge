@@ -1,19 +1,22 @@
 <?php
 
-/**
- * @file
- * travelpledge\PrivateLabelStatus class definition.
- *
- * @author Woody Whitman <woody@handbid.com>
- */
-
 namespace travelpledge\models;
 
+use travelpledge\Exception;
+
 /**
- * Description of PrivateLabelStatus
+ * @project php-travelpledge
+ * @class travelpledge\models\PrivateLabelStatus
  *
- * @author woody
+ * @author Woody Whitman <woody@handbid.com>
+ * 
+ * @property UUID $CharityID
+ * @property string $Ein
+ * @property string $Name
+ * @property string $RequestStatus
+ * @property datetime $DateRequested
  */
+
 class PrivateLabelStatus extends BaseModel {
 
     public $attributes = [

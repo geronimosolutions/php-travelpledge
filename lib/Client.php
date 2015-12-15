@@ -48,8 +48,9 @@ class Client extends BaseClient {
         return $this->transact(self::METHOD_UPDATE, $sPath, $aValues);
     }
 
-    protected function transact($sType, $sPath, $aValues = null, $sId = null) {        
-        $sParamPath = $sId ? $sPath . '/' . $sId : $sPath;                
+    protected function transact($sType, $sPath, $aValues = null, $sId = null) {  
+        $sCleanId = $sId ? str_replace('-', '', $sId) : null;
+        $sParamPath = $sCleanId ? $sPath . '/' . $sCleanId : $sPath;                
         $pCh = curl_init();
         curl_setopt($pCh, CURLOPT_URL, sprintf('%s://%s%s', $this->protocol, $this->serverHost, $sParamPath ));
         curl_setopt($pCh, CURLOPT_CUSTOMREQUEST, $sType);    

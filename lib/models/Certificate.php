@@ -1,18 +1,18 @@
 <?php
-/**
- * @file
- * travelpledge\Certificate class definition.
- *
- * @author Woody Whitman <woody@handbid.com>
- */
+
 namespace travelpledge\models;
 
+use travelpledge\Exception;
+
 /**
- * Description of Certificate
+ * @project php-travelpledge
+ * @class travelpledge\models\Certificate
  *
- * @author woody
+ * @author Woody Whitman <woody@handbid.com>
+ * 
+ * @property mixed $attributes
  */
+
 class Certificate extends BaseModel {
     
-    public $attributes = [];
 }
