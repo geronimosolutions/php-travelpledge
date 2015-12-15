@@ -124,15 +124,23 @@ class TravelPledge extends BaseClient {
     /**
      * Returns PrivateLabelStatus list by Status Type
      * @param string $sLabelStatusType
-     * @see self::STATUS_LABEL_PENDING
-     * @see self::STATUS_LABEL_APPROVED
+     * @see STATUS_LABEL_PENDING
+     * @see STATUS_LABEL_APPROVED
      * @return PrivateLabelStatus|null
      */
     public function viewPrivateLabelStatus($sPrivateLabelId) {
-        /* @var $oPrivateLabelStatii PrivateLabelStatus[] */
-        $oPrivateLabelStatii = $this->checkPrivateLabelStatus(self::STATUS_LABEL_PENDING);
         
-        foreach ($oPrivateLabelStatii as $oPrivateLabelStatus) {
+        /* @var $oPrivateLabelPending PrivateLabelStatus[] */
+        $oPrivateLabelPending = $this->checkPrivateLabelStatus(self::STATUS_LABEL_PENDING);
+        foreach ($oPrivateLabelPending as $oPrivateLabelStatus) {
+            if ($sPrivateLabelId === $oPrivateLabelStatus->CharityID) {
+                return $oPrivateLabelStatus;
+            }
+        }
+        
+        /* @var $oPrivateLabelApproved PrivateLabelStatus[] */
+        $oPrivateLabelApproved = $this->checkPrivateLabelStatus(self::STATUS_LABEL_APPROVED);
+        foreach ($oPrivateLabelApproved as $oPrivateLabelStatus) {
             if ($sPrivateLabelId === $oPrivateLabelStatus->CharityID) {
                 return $oPrivateLabelStatus;
             }

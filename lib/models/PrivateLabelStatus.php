@@ -16,7 +16,6 @@ use travelpledge\Exception;
  * @property string $RequestStatus
  * @property datetime $DateRequested
  */
-
 class PrivateLabelStatus extends BaseModel {
 
     public $attributes = [
