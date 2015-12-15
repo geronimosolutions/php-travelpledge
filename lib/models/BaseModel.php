@@ -17,6 +17,7 @@ use travelpledge\Exception;
  */
 abstract class BaseModel
 {
+    private $_attributes;
 
     /**
      * Constructor.
@@ -35,7 +36,7 @@ abstract class BaseModel
     public function __construct($aConfig)
     {
         foreach ($aConfig as $key => $value) {
-           $this->_attributes[$key] = $value;
+           $this->$key = $value;
         }
     }
 
