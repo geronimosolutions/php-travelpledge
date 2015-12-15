@@ -61,5 +61,17 @@ class GolfCertificate extends Certificate {
         "StateOrProvince",
         "Country"
     ];
+    
+    public function getName() {
+        return $this->CourseName;
+    }
+    
+    public function getDetails() {
+        return $this->FeeDetails;
+    }
+    
+    public function getImage() {
+        return $this->CoursePhoto;
+    }
 
 }

@@ -57,5 +57,17 @@ class VacationCertificate extends Certificate {
         "StateOrProvince",
         "Country"
     ];
+    
+    public function getName() {
+        return $this->MarketingHeadline;
+    }
+    
+    public function getDetails() {
+        return $this->ValidityDetails;
+    }
 
+    
+    public function getImage() {
+        return $this->ImageUrl;
+    }
 }
