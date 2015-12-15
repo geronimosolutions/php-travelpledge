@@ -9,6 +9,10 @@ namespace travelpledge;
 
 use travelpledge\models\GolfCertificate;
 use travelpledge\models\VacationCertificate;
+use travelpledge\models\PrivateLabel;
+use travelpledge\models\PrivateLabelRequest;
+use travelpledge\models\PrivateLabelStatus;
+
 /**
  * Description of TravelPledge
  *
@@ -33,6 +37,10 @@ class TravelPledge {
     public $contentType = 'application/json';    
     public $verifyPeer = 0;
     
+    /**
+     *
+     * @var Client
+     */
     private $_client;
     
     /**
@@ -40,19 +48,19 @@ class TravelPledge {
      * @return GolfCertificate[]
      */
     public function viewGolfCertificates() {
-        $certificates = [];
-        $client = $this->getClient();
+        $oCertificates = [];
+        $oClient = $this->getClient();
         
-        $results = $client->listing(self::PATH_GOLF_CERT);
-        if (!$results) {
-            return $certificates;
+        $aResults = $oClient->listing(self::PATH_GOLF_CERT);
+        if (!$aResults) {
+            return $oCertificates;
         }
         
-        foreach ($results as $result) {
-            $certificates[] = new GolfCertificate($result);
+        foreach ($aResults as $aResult) {
+            $oCertificates[] = new GolfCertificate($aResult);
         }
         
-        return $certificates;
+        return $oCertificates;
     }
     
     /**
@@ -60,23 +68,31 @@ class TravelPledge {
      * @return VacationCertificate[]
      */
     public function viewVacationCertificates() {
-        $certificates = [];
-        $client = $this->getClient();
+        $oCertificates = [];
+        $oClient = $this->getClient();
         
-        $results = $client->listing(self::PATH_VACATION_CERT);
-        if (!$results) {
-            return $certificates;
+        $aResults = $oClient->listing(self::PATH_VACATION_CERT);
+        if (!$aResults) {
+            return $oCertificates;
         }
         
-        foreach ($results as $result) {
-            $certificates[] = new VacationCertificate($result);
+        foreach ($aResults as $aResult) {
+            $oCertificates[] = new VacationCertificate($aResult);
         }
         
-        return $certificates;
+        return $oCertificates;
     }
     
-    public function createPrivateLabel() {
+    public function createPrivateLabel($aConfig) {
+        $oPrivateLabelRequest = new PrivateLabelRequest($aConfig);
+        $oClient = $this->getClient();
         
+        $aResults = $oClient->create(self::PATH_LABEL_REQUEST,$oPrivateLabelRequest->getAttributes());
+        if (!$aResults) {
+            /** @todo logging */
+            return null;
+        }
+        return new PrivateLabel($aResults);
     }
     
     public function checkPrivateLabelStatus() {
@@ -87,13 +103,14 @@ class TravelPledge {
         
     }
     
-    public function viewPrivateLabel($privateLabelId) {
-        
+    public function viewPrivateLabel($sPrivateLabelId) {
+        $oClient = $this->getClient();
+        $aResults = $oClient->view(self::PATH_LABEL_VIEW,$oPrivateLabelRequest->getAttributes());
     }
     
     /**
      * 
-     * @return travelpledge\Client
+     * @return Client
      */
     public function getClient() {
         if (empty($this->_client)) {

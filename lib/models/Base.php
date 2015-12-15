@@ -22,19 +22,19 @@ abstract class Base
      * Constructor.
      * The default implementation does two things:
      *
-     * - Initializes the object with the given configuration `$config`.
+     * - Initializes the object with the given configuration `$aConfig`.
      * - Call [[init()]].
      *
      * If this method is overridden in a child class, it is recommended that
      *
-     * - the last parameter of the constructor is a configuration array, like `$config` here.
+     * - the last parameter of the constructor is a configuration array, like `$aConfig` here.
      * - call the parent implementation at the end of the constructor.
      *
-     * @param array $config name-value pairs that will be used to initialize the object properties
+     * @param array $aConfig name-value pairs that will be used to initialize the object properties
      */
-    public function __construct($config)
+    public function __construct($aConfig)
     {
-        foreach ($config as $key => $value) {
+        foreach ($aConfig as $key => $value) {
            $this->_attributes[$key] = $value;
         }
     }
@@ -80,5 +80,9 @@ abstract class Base
         $this->_attributes[$attribute] = $value;
 
         return $this->_attributes[$attribute];
+    }
+    
+    public function getAttributes() {
+        return $this->_attributes;
     }
 }

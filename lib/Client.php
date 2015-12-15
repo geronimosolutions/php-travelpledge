@@ -31,22 +31,22 @@ class Client {
     private $serverPort = 80;    
     private $protocol;
     
-    public function __construct($attributes) {
+    public function __construct($aAttributes) {
         
-        $this->apiVersion = !empty($attributes['apiVersion']) ?
-            $attributes['apiVersion'] :
+        $this->apiVersion = !empty($aAttributes['apiVersion']) ?
+            $aAttributes['apiVersion'] :
             $this->apiVersion;
         
-        $this->apiKey = !empty($attributes['apiKey']) ?
-            $attributes['apiKey'] :
+        $this->apiKey = !empty($aAttributes['apiKey']) ?
+            $aAttributes['apiKey'] :
             $this->apiKey;
         
-        $this->contentType = !empty($attributes['contentType']) ?
-            $attributes['contentType'] :
+        $this->contentType = !empty($aAttributes['contentType']) ?
+            $aAttributes['contentType'] :
             $this->contentType;
         
-        $this->verifyPeer = !empty($attributes['verifyPeer']) ?
-            $attributes['verifyPeer'] :
+        $this->verifyPeer = !empty($aAttributes['verifyPeer']) ?
+            $aAttributes['verifyPeer'] :
             $this->verifyPeer;
         
         $this->protocol = $this->serverPort == self::PROTOCOL_SECURE_PORT ? 
@@ -54,48 +54,41 @@ class Client {
             self::PROTOCOL_UNSECURE;
     }
 
-    protected function view($path, $id) {
-        return $this->transact(self::METHOD_VIEW, $path, null, $id);
+    protected function view($sPath, $sId) {
+        return $this->transact(self::METHOD_VIEW, $sPath, null, $sId);
     }
 
-    protected function listing($path) {
-        return $this->transact(self::METHOD_VIEW, $path, null);
+    protected function listing($sPath) {
+        return $this->transact(self::METHOD_VIEW, $sPath, null);
     }
 
-    protected function create($path, $values) {
-        return $this->transact(self::METHOD_CREATE, $path, $values);
+    protected function create($sPath, $aValues) {
+        return $this->transact(self::METHOD_CREATE, $sPath, $aValues);
     }
 
-    protected function update($path, $values) {
-        return $this->transact(self::METHOD_UPDATE, $path, $values);
+    protected function update($sPath, $aValues) {
+        return $this->transact(self::METHOD_UPDATE, $sPath, $aValues);
     }
 
-    protected function transact($type, $path, $values = null, $id = null) {
-        
-        $tp_url = sprintf('%s://%s%s', $this->protocol, $this->serverHost, $path );
-        
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_URL, $tp_url);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $type);
-        if ($values) {
-            $tp_body = json_encode($values);
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $tp_body);
+    protected function transact($sType, $sPath, $aValues = null, $sId = null) {        
+        $sParamPath = $sId ? $sPath . '/' . $sId : $sPath;                
+        $pCh = curl_init();
+        curl_setopt($pCh, CURLOPT_URL, sprintf('%s://%s%s', $this->protocol, $this->serverHost, $sParamPath ));
+        curl_setopt($pCh, CURLOPT_CUSTOMREQUEST, $sType);    
+        curl_setopt($pCh, CURLOPT_RETURNTRANSFER, 1);    
+        curl_setopt($pCh, CURLOPT_HTTPHEADER, ["Content-Type: {$this->contentType}","X-Api-Version: {$this->apiVersion}","X-Affiliate-Key: {$this->apiKey}"]);
+        if ($aValues) {         
+            curl_setopt($pCh, CURLOPT_POSTFIELDS, json_encode($aValues));
         }
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, $this->verifyPeer);
-        curl_setopt($ch, CURLOPT_HTTPHEADER, [
-            "Content-Type: {$this->contentType}", 
-            "X-Api-Version: {$this->apiVersion}", 
-            "X-Affiliate-Key: {$this->apiKey}"
-        ]);
-            
+        if ($this->protocol===self::PROTOCOL_SECURE_PORT) {
+            curl_setopt($pCh, CURLOPT_SSL_VERIFYPEER, $this->verifyPeer);
+        }           
         try {
-            $returnVal = json_decode(curl_exec($ch));
-        } catch (\Exception $ex) {
-            $returnVal = null;
-            /** @todo do some logging here */
+            $aReturnVal = json_decode(curl_exec($pCh));
+        } catch (\Exception $oEx) {
+            $aReturnVal = []; /** @todo do some logging here */
         }
-        return $returnVal;
+        return $aReturnVal;
     }
 
 }
