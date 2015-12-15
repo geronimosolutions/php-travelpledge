@@ -1,9 +1,9 @@
 <?php
 /**
  * @file
- * travelpledge\Exception class definition.
+ * travelpledge\Base abstract class definition.
  *
- * @author (C) 2015 Woody Whitman (woody@handbid.com)
+ * @author Woody Whitman <woody@handbid.com>
  */
 namespace travelpledge\models;
 
@@ -17,21 +17,41 @@ use travelpledge\Exception;
  */
 abstract class Base
 {
-    
-    protected $_attributes; /**< @type string[] Active environment. */
 
     /**
      * Constructor.
+     * The default implementation does two things:
      *
-     * @param  mixed[] @type string Environment.
+     * - Initializes the object with the given configuration `$config`.
+     * - Call [[init()]].
+     *
+     * If this method is overridden in a child class, it is recommended that
+     *
+     * - the last parameter of the constructor is a configuration array, like `$config` here.
+     * - call the parent implementation at the end of the constructor.
+     *
+     * @param array $config name-value pairs that will be used to initialize the object properties
      */
-    public function __construct($attributes)
+    public function __construct($config)
     {
-        foreach ($attributes as $key => $value) {
+        foreach ($config as $key => $value) {
            $this->_attributes[$key] = $value;
         }
     }
 
+    /**
+     * Returns the value of a component property.
+     * This method will check in the following order and act accordingly:
+     *
+     *  - a property defined by a getter: return the getter result
+     *  - a property of a behavior: return the behavior property value
+     *
+     * Do not call this method directly as it is a PHP magic method that
+     * will be implicitly called when executing `$value = $component->property;`.
+     * @param string $name the property name
+     * @return mixed the property value or the value of a behavior's property
+     * @see __set()
+     */
     public function __get($attribute)
     {
         if (isset($this->_attributes[$attribute])) {
@@ -40,6 +60,21 @@ abstract class Base
         return null;
     }
 
+    /**
+     * Sets the value of a component property.
+     * This method will check in the following order and act accordingly:
+     *
+     *  - a property defined by a setter: set the property value
+     *  - an event in the format of "on xyz": attach the handler to the event "xyz"
+     *  - a behavior in the format of "as xyz": attach the behavior named as "xyz"
+     *  - a property of a behavior: set the behavior property value
+     *
+     * Do not call this method directly as it is a PHP magic method that
+     * will be implicitly called when executing `$component->property = $value;`.
+     * @param string $name the property name or the event name
+     * @param mixed $value the property value
+     * @see __get()
+     */
     public function __set($attribute,$value)
     {
         $this->_attributes[$attribute] = $value;

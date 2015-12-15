@@ -2,8 +2,7 @@
 /**
  * @file
  * travelpledge\Exception class definition.
- *
- * @author (C) 2015 Woody Whitman (woody@handbid.com)
+ * @author Woody Whitman <woody@handbid.com>
  */
 namespace travelpledge;
 

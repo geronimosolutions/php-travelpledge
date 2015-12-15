@@ -1,23 +1,32 @@
 <?php
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/**
+ * @link http://www.handbid.com/
+ * @license GNU GENERAL PUBLIC LICENSE VERSION 2
  */
 
 namespace travelpledge;
 
 use travelpledge\models\GolfCertificate;
+use travelpledge\models\VacationCertificate;
 /**
  * Description of TravelPledge
  *
- * @author woody
+ * @author Woody Whitman <woody@handbid.com>
  */
 class TravelPledge {
     
     const PATH_GOLF_CERT = '/rest/certificates/golf';
     const PATH_VACATION_CERT = '/rest/certificates/vacation';
+    const PATH_RESERVED_CERTS = '/rest/certificates/reserved';
+    
+    const PATH_EVENT_VIEW = '/rest/event/active';
+    const PATH_LABEL_CREATE = '/rest/nonprofit';
+    const PATH_LABEL_LIST = '/rest/nonprofit';
+    const PATH_LABEL_VIEW = '/rest/nonprofit';
+    const PATH_LABEL_REQUEST= '/rest/nonprofit/access/request';
+    const PATH_LABEL_SEARCH = '/rest/nonprofit/search';
+    const PATH_LABEL_STATUS= '/rest/nonprofit/access/status';
     
     public $apiVersion = 2;    
     public $apiKey = '';    
@@ -26,6 +35,10 @@ class TravelPledge {
     
     private $_client;
     
+    /**
+     * 
+     * @return GolfCertificate[]
+     */
     public function viewGolfCertificates() {
         $certificates = [];
         $client = $this->getClient();
@@ -42,6 +55,10 @@ class TravelPledge {
         return $certificates;
     }
     
+    /**
+     * 
+     * @return VacationCertificate[]
+     */
     public function viewVacationCertificates() {
         $certificates = [];
         $client = $this->getClient();
@@ -52,7 +69,7 @@ class TravelPledge {
         }
         
         foreach ($results as $result) {
-            $certificates[] = new GolfCertificate($result);
+            $certificates[] = new VacationCertificate($result);
         }
         
         return $certificates;

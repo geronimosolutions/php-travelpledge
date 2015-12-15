@@ -2,15 +2,15 @@
 
 /**
  * @file
- * travelpledge\Exception class definition.
+ * travelpledge\GolfCertificate class definition.
  *
- * @author (C) 2015 Woody Whitman (woody@handbid.com)
+ * @author Woody Whitman <woody@handbid.com>
  */
 
 namespace travelpledge\models;
 
 /**
- * Description of Certificate
+ * Description of GolfCertificate
  *
  * @author woody
  */
