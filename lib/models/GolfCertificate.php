@@ -35,6 +35,15 @@ use travelpledge\Exception;
  * @property string $Country
  */
 class GolfCertificate extends Certificate {
+    
+    public $normailizeMap = [
+        'id' => 'Id',
+        'details' => 'FeeDetails',
+        'description' => 'Description',
+        'image' => 'CoursePhoto',
+        'name' => 'CourseName',
+        'value' => 'RetailValue',
+    ];
 
     public $attributes = [
         "NumberOfPlayers",
@@ -61,17 +70,5 @@ class GolfCertificate extends Certificate {
         "StateOrProvince",
         "Country"
     ];
-    
-    public function getName() {
-        return $this->CourseName;
-    }
-    
-    public function getDetails() {
-        return $this->FeeDetails;
-    }
-    
-    public function getImage() {
-        return $this->CoursePhoto;
-    }
 
 }

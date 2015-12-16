@@ -15,6 +15,9 @@ use travelpledge\Exception;
 
 abstract class BaseModel
 {
+    const DEFAULT_IMAGE = '/images/default_photo-100px-grey.png';
+    const ADDRESS_FORMAT = "%s, %s<br> %s";
+    
     private $_attributes;
 
     /**
@@ -53,8 +56,10 @@ abstract class BaseModel
      */
     public function __get($attribute)
     {
-        if ($attribute == 'attributes') {
-            return $this->getAttributes();
+        $getter = 'get' . $attribute;
+        if (method_exists($this, $getter)) {
+            // read property, e.g. getName()
+            return $this->$getter();
         } elseif (isset($this->_attributes[$attribute])) {
             return $this->_attributes[$attribute];
         }
@@ -78,22 +83,64 @@ abstract class BaseModel
      */
     public function __set($attribute,$value)
     {
-        if ($attribute == 'attributes') {
-            return $this->setAttributes($value);
+        $setter = 'set' . $attribute;
+        if (method_exists($this, $setter)) {
+            // set property
+            $this->$setter($value);
+
+            return $value;
         }
         $this->_attributes[$attribute] = $value;
 
         return $this->_attributes[$attribute];
     }
     
+    /**
+     * Returns attribute values.
+     * @return mixed[]
+     */
     public function getAttributes() {
         return $this->_attributes;
     }
     
+    /**
+     * Sets attribute values.
+     * @param mixed[]
+     * @return mixed[]
+     */
     public function setAttributes($attributes) {
         
         $this->_attributes = $attributes;
         
         return $this->_attributes;
+    }
+
+    /**
+     * Find out if a remote image file exists
+     * @param string $modelImageLocation url
+     * @return boolean
+     */
+    public static function remoteImageExists($modelImageLocation)
+    {
+        try {
+            $ch = curl_init($modelImageLocation);
+            curl_setopt($ch, CURLOPT_NOBODY, true);
+            curl_exec($ch);
+            $retcode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+            // $retcode >= 400 -> not found, $retcode = 200, found.
+            curl_close($ch);
+        } catch (\Exception $ex) {
+            $error = json_encode([
+                $ex->getMessage(),
+                $ex->getTraceAsString()
+            ]);
+        }
+        if (empty($retcode)) {
+            $retcode = 500;
+        }
+        if ($retcode >= 200 && $retcode < 400) {
+            return true;
+        }
+        return false;
     }
 }
