@@ -15,6 +15,8 @@ use travelpledge\Exception;
 
 abstract class BaseModel
 {
+    const REMOTE_IMAGE_PATH = '/UploadFiles/';
+    const REMOTE_IMAGE_HOST = 'www.geronimo.com';
     const DEFAULT_IMAGE = '/images/default_photo-100px-grey.png';
     const ADDRESS_FORMAT = "%s, %s<br> %s";
     

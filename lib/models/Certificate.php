@@ -23,7 +23,7 @@ use travelpledge\Exception;
  * @property string $MarketingHeadline
  * @property string $Provider
  * @property string $City
- * @property boolean $StateOrProvince
+ * @property string $StateOrProvince
  * @property string $Country
  * 
  * Magic Parameters
@@ -35,28 +35,9 @@ use travelpledge\Exception;
  * @property string $name Normailzed name
  */
 class Certificate extends BaseModel {
+    
+    public $categoryType = '';
 
-    public $viewAttributes = [
-        'Provider',
-        'address' => [
-            'attribute' => 'address',
-            'format' => 'raw',
-        ],
-        'MinimumBid' => [
-            'attribute' => 'MinimumBid',
-            'format' => 'currency',
-        ],
-        'RetailValue' => [
-            'attribute' => 'RetailValue',
-            'format' => 'currency',
-        ],
-    ];
-    public $detailAttributes = [
-        'Description',
-        'ValidityDetails',
-        'Restrictions',
-        'RedemptionInstructions',
-    ];
     public $normailizeMap = [
         'details' => 'ValidityDetails',
         'image' => 'ImageUrl',
@@ -127,7 +108,13 @@ class Certificate extends BaseModel {
         $value = null;
         $field = strtolower(substr($method, strpos($method, '::') + 5));
         if (array_key_exists($field, $this->normailizeMap)) {
-            $value = str_replace('http://', 'https://', $this->{$this->normailizeMap[strtolower($field)]});
+            $image_value = $this->{$this->normailizeMap[$field]};
+            if (!stristr($image_value, self::REMOTE_IMAGE_HOST)) {
+                $value = 'https://' . self::REMOTE_IMAGE_HOST . $image_value;
+            } else {
+                $value = str_replace('http://', 'https://', $image_value);
+            }
+            
             if (!self::remoteImageExists($value)) {
                 $value = self::DEFAULT_IMAGE;
             }

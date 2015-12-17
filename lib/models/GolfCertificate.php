@@ -36,6 +36,8 @@ use travelpledge\Exception;
  */
 class GolfCertificate extends Certificate {
     
+    public $categoryType = 'golf';
+    
     public $normailizeMap = [
         'id' => 'Id',
         'details' => 'FeeDetails',

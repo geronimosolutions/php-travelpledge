@@ -34,6 +34,8 @@ use travelpledge\Exception;
  */
 class VacationCertificate extends Certificate {
     
+    public $categoryType = 'vacation';
+    
     public $normailizeMap = [
         'id' => 'Id',
         'details' => 'ValidityDetails',
