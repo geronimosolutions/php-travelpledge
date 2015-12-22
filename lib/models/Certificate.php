@@ -2,7 +2,8 @@
 
 namespace travelpledge\models;
 
-use travelpledge\Exception;
+use travelpledge\models\GolfCertificate;
+use travelpledge\models\VacationCertificate;
 
 /**
  * @project php-travelpledge
@@ -36,15 +37,39 @@ use travelpledge\Exception;
  */
 class Certificate extends BaseModel {
     
+    /**
+     * Child class category type
+     * @var string 
+     */
     public $categoryType = '';
 
+    /**
+     * Common class field mappings
+     * @var string[] 
+     */
     public $normailizeMap = [
         'details' => 'ValidityDetails',
         'image' => 'ImageUrl',
         'name' => 'MarketingHeadline',
     ];
+    
+    /**
+     * Magic Display Address container
+     * @var string 
+     */
     protected $_address;
+    
+    /**
+     * Magic Display Image Url container
+     * @var string 
+     */
     protected $_image;
+    
+    /**
+     * Child clas type identying field
+     * @var string 
+     */
+    public static $uniqueAttribute = '';
 
     /**
      * Constructor.
@@ -66,16 +91,11 @@ class Certificate extends BaseModel {
         $this->getImage();
     }
 
-    public function getImage() {
-        if ($this->_image) {
-            return $this->_image;
-        }
-
-        $this->_image = $this->normalizeImage(__METHOD__);
-
-        return $this->_image;
-    }
-
+    /**
+     * Gets the display address
+     * (regarless various child types)
+     * @return string
+     */
     public function getAddress() {
         if ($this->_address) {
             return $this->_address;
@@ -87,23 +107,61 @@ class Certificate extends BaseModel {
         return $this->_address;
     }
 
-    public function getPriceGroup() {
-        if ($this->MinimumBid <= 250) {
-            return 'low';
-        } elseif ($this->MinimumBid <= 2500) {
-            return 'medium';
-        }
-        return 'high';
-    }
-
-    public function getName() {
-        return $this->normalizeField(__METHOD__);
-    }
-
+    /**
+     * Gets the display details
+     * (regarless various child types)
+     * @return string
+     */
     public function getDetails() {
         return $this->normalizeField(__METHOD__);
     }
 
+    /**
+     * Gets the image url
+     * (regarless various child types)
+     * @return string Url
+     */
+    public function getImage() {
+        if ($this->_image) {
+            return $this->_image;
+        }
+
+        $this->_image = $this->normalizeImage(__METHOD__);
+
+        return $this->_image;
+    }
+
+    /**
+     * Gets the display name
+     * (regarless various child types)
+     * @return string
+     */
+    public function getName() {
+        return $this->normalizeField(__METHOD__);
+    }
+    
+    /**
+     * returns the right child model based on content of attributes
+     * @param string[] $attributes
+     * @return Certificate
+     */
+    public static function fetchType($attributes) {
+        $type = 'Certificate';
+        if (array_key_exists(GolfCertificate::$uniqueAttribute,$attributes)) {
+            $type = 'GolfCertificate';
+        }
+        if (array_key_exists(VacationCertificate::$uniqueAttribute,$attributes)) {
+            $type = 'VacationCertificate';
+        }
+        return new $type($attributes);
+        
+    }
+
+    /**
+     * Protected normalize image type function
+     * (regarless various child types)
+     * @return string
+     */
     protected function normalizeImage($method) {
         $value = null;
         $field = strtolower(substr($method, strpos($method, '::') + 5));
@@ -122,6 +180,11 @@ class Certificate extends BaseModel {
         return $value;
     }
 
+    /**
+     * Protected normalize generic type function
+     * (regarless various child types)
+     * @return string
+     */
     protected function normalizeField($method) {
         $field = strtolower(substr($method, strpos($method, '::') + 5));
         if (array_key_exists($field, $this->normailizeMap)) {

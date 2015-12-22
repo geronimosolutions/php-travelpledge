@@ -7,6 +7,7 @@
 
 namespace travelpledge;
 
+use travelpledge\models\Certificate;
 use travelpledge\models\GolfCertificate;
 use travelpledge\models\VacationCertificate;
 use travelpledge\models\PrivateLabel;
@@ -20,9 +21,10 @@ use travelpledge\models\PrivateLabelStatus;
  */
 class TravelPledge extends BaseClient {
     
-    const PATH_GOLF_CERT = '/rest/certificates/golf';
-    const PATH_VACATION_CERT = '/rest/certificates/vacation';
-    const PATH_RESERVED_CERTS = '/rest/certificates/reserved';
+    const PATH_CERT_VIEW = '/rest/certificates';
+    const PATH_CERT_GOLF = '/rest/certificates/golf';
+    const PATH_CERT_VACATION = '/rest/certificates/vacation';
+    const PATH_CERT_RESERVED = '/rest/certificates/reserved';
     
     const PATH_EVENT_VIEW = '/rest/event/active';
     const PATH_LABEL_CREATE = '/rest/nonprofit';
@@ -40,6 +42,21 @@ class TravelPledge extends BaseClient {
      * @var Client
      */
     private $_client;
+        
+    /**
+     * View Certificate By ID
+     * @param integer $iCertificateId pk
+     * @return PrivateLabel|null
+     */
+    public function viewCertificate($iCertificateId) {
+        $oClient = $this->getClient();
+        $aResults = $oClient->view(self::PATH_CERT_VIEW,$iCertificateId);
+        if (!$aResults) {
+            return null;
+        }
+        
+        return Certificate::fetchType($aResults);        
+    }
     
     /**
      * Returns available Golf Certificates
@@ -49,7 +66,7 @@ class TravelPledge extends BaseClient {
         $oCertificates = [];
         $oClient = $this->getClient();
         
-        $aResults = $oClient->listing(self::PATH_GOLF_CERT);
+        $aResults = $oClient->listing(self::PATH_CERT_GOLF);
         if (!$aResults) {
             return $oCertificates;
         }
@@ -69,7 +86,7 @@ class TravelPledge extends BaseClient {
         $oCertificates = [];
         $oClient = $this->getClient();
         
-        $aResults = $oClient->listing(self::PATH_VACATION_CERT);
+        $aResults = $oClient->listing(self::PATH_CERT_VACATION);
         if (!$aResults) {
             return $oCertificates;
         }

@@ -67,4 +67,6 @@ class VacationCertificate extends Certificate {
         "StateOrProvince",
         "Country"
     ];
+    
+    public static $uniqueAttribute = 'NumberOfBedrooms';
 }

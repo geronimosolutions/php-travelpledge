@@ -72,5 +72,7 @@ class GolfCertificate extends Certificate {
         "StateOrProvince",
         "Country"
     ];
+    
+    public static $uniqueAttribute = 'CourseName';
 
 }
