@@ -18,7 +18,7 @@ abstract class BaseModel
     const REMOTE_IMAGE_PATH = '/UploadFiles/';
     const REMOTE_IMAGE_HOST = 'www.geronimo.com';
     const DEFAULT_IMAGE = null;
-    const ADDRESS_FORMAT = "%s, %s<br> %s";
+    const ADDRESS_FORMAT = "%s, %s"; // ""%s, %s<br> %s";
     
     private $_attributes;
 
