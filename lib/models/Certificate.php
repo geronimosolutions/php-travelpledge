@@ -26,6 +26,8 @@ use travelpledge\models\VacationCertificate;
  * @property string $City
  * @property string $StateOrProvince
  * @property string $Country
+ * @property float $PercentageDonatedToCharity
+ * @property integer $MinimumAmountDonatedToCharity
  * 
  * Magic Parameters
  * @property mixed $attributes

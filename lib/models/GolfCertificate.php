@@ -33,6 +33,8 @@ use travelpledge\Exception;
  * @property string $City
  * @property boolean $StateOrProvince
  * @property string $Country
+ * @property float $PercentageDonatedToCharity
+ * @property integer $MinimumAmountDonatedToCharity
  */
 class GolfCertificate extends Certificate {
     
@@ -70,7 +72,9 @@ class GolfCertificate extends Certificate {
         "Provider",
         "City",
         "StateOrProvince",
-        "Country"
+        "Country",
+        "PercentageDonatedToCharity",
+        "MinimumAmountDonatedToCharity"
     ];
     
     public static $uniqueAttribute = 'CourseName';

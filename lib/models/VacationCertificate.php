@@ -31,6 +31,8 @@ use travelpledge\Exception;
  * @property string $City
  * @property boolean $StateOrProvince
  * @property string $Country
+ * @property float $PercentageDonatedToCharity
+ * @property integer $MinimumAmountDonatedToCharity
  */
 class VacationCertificate extends Certificate {
     
@@ -65,7 +67,9 @@ class VacationCertificate extends Certificate {
         "Provider",
         "City",
         "StateOrProvince",
-        "Country"
+        "Country",
+        "PercentageDonatedToCharity",
+        "MinimumAmountDonatedToCharity"
     ];
     
     public static $uniqueAttribute = 'NumberOfBedrooms';
